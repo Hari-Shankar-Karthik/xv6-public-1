@@ -28,6 +28,8 @@ void helloYou(char*);
 int getNumProc(void);
 int getMaxPid(void);
 int getProcInfo(int, struct processInfo*);
+int getPrio(void);
+void setPrio(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

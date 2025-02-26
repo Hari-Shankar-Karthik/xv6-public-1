@@ -130,3 +130,20 @@ sys_getProcInfo(void)
   ptr->numberContextSwitches = curr_proc->numberContextSwitches;
   return 0;
 }
+
+int
+sys_getPrio(void)
+{
+  return myproc()->prio;
+}
+
+int
+sys_setPrio(void)
+{
+  int prio;
+  if(argint(0, &prio) < 0) {
+    return -1;
+  }
+  myproc()->prio = prio;
+  return 0;
+}
