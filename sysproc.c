@@ -89,3 +89,14 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int
+sys_helloYou(void)
+{
+  char *name;
+  if(argptr(0, &name, sizeof(name)) < 0) {
+    return -1;
+  }
+  cprintf("%s\n", name);
+  return 0;
+}
