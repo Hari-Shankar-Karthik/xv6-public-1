@@ -103,8 +103,6 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
-extern int sys_welcomeFunction(void);
-extern int sys_welcomeDone(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -128,8 +126,6 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
-[SYS_welcomeFunction] sys_welcomeFunction,
-[SYS_welcomeDone]     sys_welcomeDone,
 };
 
 void

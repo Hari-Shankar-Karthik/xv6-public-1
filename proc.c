@@ -88,7 +88,6 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-  p->childJumpsTo = 0;
 
   release(&ptable.lock);
 
@@ -203,11 +202,6 @@ fork(void)
 
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
-
-  if(curproc->childJumpsTo != 0) {
-    np->returnTo = np->tf->eip;
-    np->tf->eip = curproc->childJumpsTo;
-  }
 
   for(i = 0; i < NOFILE; i++)
     if(curproc->ofile[i])

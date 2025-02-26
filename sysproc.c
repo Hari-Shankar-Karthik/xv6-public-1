@@ -89,21 +89,3 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-
-int 
-sys_welcomeFunction(void)
-{
-  int childJumpsTo;
-  if(argint(0, &childJumpsTo) < 0) {
-    return -1;
-  }
-  myproc()->childJumpsTo = (uint)childJumpsTo;
-  return 0;
-}
-
-int 
-sys_welcomeDone(void)
-{
-  myproc()->tf->eip = myproc()->returnTo;
-  return 0;
-}
