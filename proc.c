@@ -129,6 +129,7 @@ userinit(void)
   if((p->pgdir = setupkvm()) == 0)
     panic("userinit: out of memory?");
   inituvm(p->pgdir, _binary_initcode_start, (int)_binary_initcode_size);
+  p->numberContextSwitches = 0;
   p->sz = PGSIZE;
   memset(p->tf, 0, sizeof(*p->tf));
   p->tf->cs = (SEG_UCODE << 3) | DPL_USER;
@@ -196,6 +197,7 @@ fork(void)
     np->state = UNUSED;
     return -1;
   }
+  np->numberContextSwitches = 0;
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
@@ -342,6 +344,7 @@ scheduler(void)
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      p->numberContextSwitches++;
 
       swtch(&(c->scheduler), p->context);
       switchkvm();
@@ -531,4 +534,30 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+int 
+getNumProc(void)
+{
+  int numProc = 0;
+  struct proc *p;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if(p->state != UNUSED) {
+      numProc++;
+    }
+  }
+  return numProc;
+}
+
+int
+getMaxPid(void)
+{
+  int maxPid = 0;
+  struct proc *p;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if(p->state != UNUSED && p->pid > maxPid) {
+      maxPid = p->pid;
+    }
+  }
+  return maxPid;
 }
